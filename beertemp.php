@@ -34,8 +34,34 @@
         }
     }
     elseif (!isset($_GET['sensor1']) && !isset($_GET['sensor2'])) {
-        echo "<p>Cannot get temperature from beer side!</p>";
-        echo "<p>Cannot get temperature from ice side!</p>";
+        # display last record instead
+        $fp = fopen("history.txt", 'rb');
+
+        if ($fp) {
+            $line = '';
+            $cursor = -1;
+            fseek($fp, $cursor, SEEK_END);
+            $char = fgetc($fp);
+
+            # trim trailing newline characters of the file
+            while ($char === "\n" || $char === "\r") {
+                fseek($fp, $cursor--, SEEK_END);
+                $char = fgetc($fp);
+            }
+
+            # read until the start of file or first newline character
+            while ($char !== false && $char !== "\n" && $char !== "\r") {
+                $line = $char . $line;
+                fseek($fp, $cursor--, SEEK_END);
+                $char = fgetc($fp);
+            }
+
+            echo "<pre>";
+            echo "Last Temperature Record\n";
+            echo "Time                  Beer T  Ice T\n";
+            echo $line;
+            echo "</pre>";
+        }
     }
     elseif (!isset($_GET['sensor1'])) { 
         echo "<p>Cannot get temperature from beer side!</p>";
