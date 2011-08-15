@@ -13,12 +13,12 @@
         {
             echo $e->getMessage() . "<br />";
         }
-        
-        echo $date . '<br />';
-        echo "<p>Beer side temperature: </p>";
-        echo $temp1 . '<br />';
-        echo "<p>Ice side temperature: </p>";
-        echo $temp2 . '<br />';
+
+        echo "<pre>"; 
+        echo $date . "\n\n";
+        echo "Beer side temperature: $temp1 &deg;C\n\n";
+        echo "Ice side temperature: $temp2 &deg;C\n\n";
+        echo "</pre>";
 
         # format the output string
         $output_str = $date . "\t" . $temp1 . "\t" . $temp2 . "\n";
@@ -44,8 +44,12 @@
         echo "<p>Cannot get temperature from ice side!</p>";
     }
 
+    echo "<hr />";
+
     # output a history of temperatures
-    echo "<p>Temperature History</p>";
+    echo "<pre>";
+    echo "Temperature History\n";
+    echo "Time                  Beer T  Ice T\n";
 
     # open file "history.txt" in 'rb' mode
     $fp = fopen("history.txt", 'rb');
@@ -54,9 +58,11 @@
         while (!feof($fp)) {
             # read a line
             $record = fgets($fp, 999);
-            echo $record . "<br />";
+            echo $record;
         }
         # close file
         fclose($fp);
     }
+
+    echo "</pre>";
 ?>
